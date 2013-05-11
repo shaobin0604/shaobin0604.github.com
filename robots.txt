@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://shaobin0604.github.io/sitemap.xml 
