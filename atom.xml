@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://shaobin0604.github.io/atom.xml" rel="self"/>
   <link href="http://shaobin0604.github.io/"/>
-  <updated>2013-05-11T21:56:35+08:00</updated>
+  <updated>2013-05-11T23:56:01+08:00</updated>
   <id>http://shaobin0604.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,5 +12,154 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Styling ActionBar Tabs]]></title>
+    <link href="http://shaobin0604.github.io/blog/2013/05/11/styling-actionbar-tabs/"/>
+    <updated>2013-05-11T23:12:00+08:00</updated>
+    <id>http://shaobin0604.github.io/blog/2013/05/11/styling-actionbar-tabs</id>
+    <content type="html"><![CDATA[<h2>问题说明</h2>
+
+<p>修改 <code>ActionBar</code> <code>Tabs</code> 模式在 <code>Theme.Holo.Light</code> 下的样式，以前是这个样子滴</p>
+
+<p><img src="http://shaobin0604.github.io/images/actionbar_tabs_old.png" width="480"></p>
+
+<p>现要改成如下样式</p>
+
+<p><img src="http://shaobin0604.github.io/images/actionbar_tabs_new.png" width="480"></p>
+
+<h2>实现方式</h2>
+
+<p>打开 SDK 里的 Theme 文件 <code>&lt;ANDROID_SDK&gt;/platforms/android-4.2/data/res/values/themes.xml</code>,与 <code>ActionBar</code> 相关的属性如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!-- Action bar styles --&gt;
+</span><span class='line'>&lt;item name="actionDropDownStyle"&gt;@android:style/Widget.Holo.Light.Spinner.DropDown.ActionBar&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionButtonStyle"&gt;@android:style/Widget.Holo.Light.ActionButton&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionOverflowButtonStyle"&gt;@android:style/Widget.Holo.Light.ActionButton.Overflow&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionModeBackground"&gt;@android:drawable/cab_background_top_holo_light&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionModeSplitBackground"&gt;@android:drawable/cab_background_bottom_holo_light&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionModeCloseDrawable"&gt;@android:drawable/ic_cab_done_holo_light&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionBarTabStyle"&gt;@style/Widget.Holo.Light.ActionBar.TabView&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionBarTabBarStyle"&gt;@style/Widget.Holo.Light.ActionBar.TabBar&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionBarTabTextStyle"&gt;@style/Widget.Holo.Light.ActionBar.TabText&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionModeStyle"&gt;@style/Widget.Holo.Light.ActionMode&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionModeCloseButtonStyle"&gt;@style/Widget.Holo.Light.ActionButton.CloseMode&lt;/item&gt;
+</span><span class='line'>&lt;item name="android:actionBarStyle"&gt;@android:style/Widget.Holo.Light.ActionBar.Solid&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionBarSize"&gt;@dimen/action_bar_default_height&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionModePopupWindowStyle"&gt;@android:style/Widget.Holo.Light.PopupWindow.ActionMode&lt;/item&gt;
+</span><span class='line'>&lt;item name="actionBarWidgetTheme"&gt;@null&lt;/item&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>与 <code>Tab</code> 相关的属性分析是</p>
+
+<ul>
+<li>actionBarTabBarStyle &ndash; 多个Tab的容器样式</li>
+<li>actionBarTabStyle &ndash; 单个Tab样式</li>
+<li>actionBarTabTextStyle &ndash; Tab上的字体风格</li>
+</ul>
+
+
+<p>我们需要修改的样式有以下几部分</p>
+
+<ul>
+<li>TabBar 背景色</li>
+<li>多个 Tab 之间的分隔符</li>
+<li>Tab 背景色</li>
+</ul>
+
+
+<p>创建 <code>style.xml</code></p>
+
+<figure class='code'><figcaption><span>style.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">&quot;MyActionBarTabBarStyle&quot;</span> <span class="na">parent=</span><span class="s">&quot;@android:style/Widget.Holo.Light.ActionBar.TabBar&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;android:background&quot;</span><span class="nt">&gt;</span>@drawable/actionbar_tabs_bar_bg<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;android:divider&quot;</span><span class="nt">&gt;</span>@drawable/actionbar_divider<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">&quot;MyActionBarTabStyle&quot;</span> <span class="na">parent=</span><span class="s">&quot;@android:style/Widget.Holo.Light.ActionBar.TabView&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;android:background&quot;</span><span class="nt">&gt;</span>@drawable/actionbar_tabs_bg<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">&quot;AppTheme.Holo.Light&quot;</span> <span class="na">parent=</span><span class="s">&quot;@android:style/Theme.Holo.Light&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;android:actionBarTabBarStyle&quot;</span><span class="nt">&gt;</span>@style/MyActionBarTabBarStyle<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;android:actionBarTabStyle&quot;</span><span class="nt">&gt;</span>@style/MyActionBarTabStyle<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
+</span><span class='line'><span class="nt">&lt;/resources&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>@drawable/actionbar_tabs_bg</code> 是 <code>StateListDrawable</code></p>
+
+<figure class='code'><figcaption><span>actionbar_tabs_bg.xml </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;selector</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">&lt;!-- Selected states --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;item</span> <span class="na">android:drawable=</span><span class="s">&quot;@drawable/actionbar_tabs_bg_pressed&quot;</span> <span class="na">android:state_focused=</span><span class="s">&quot;false&quot;</span> <span class="na">android:state_pressed=</span><span class="s">&quot;false&quot;</span> <span class="na">android:state_selected=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- Focused states --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;item</span> <span class="na">android:drawable=</span><span class="s">&quot;@drawable/actionbar_tabs_bg_pressed&quot;</span> <span class="na">android:state_focused=</span><span class="s">&quot;true&quot;</span> <span class="na">android:state_pressed=</span><span class="s">&quot;false&quot;</span> <span class="na">android:state_selected=</span><span class="s">&quot;false&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;item</span> <span class="na">android:drawable=</span><span class="s">&quot;@drawable/actionbar_tabs_bg_pressed&quot;</span> <span class="na">android:state_focused=</span><span class="s">&quot;true&quot;</span> <span class="na">android:state_pressed=</span><span class="s">&quot;false&quot;</span> <span class="na">android:state_selected=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- Pressed --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;item</span> <span class="na">android:drawable=</span><span class="s">&quot;@drawable/actionbar_tabs_bg_pressed&quot;</span> <span class="na">android:state_pressed=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;item</span> <span class="na">android:drawable=</span><span class="s">&quot;@android:color/transparent&quot;</span> <span class="na">android:state_focused=</span><span class="s">&quot;false&quot;</span> <span class="na">android:state_pressed=</span><span class="s">&quot;false&quot;</span> <span class="na">android:state_selected=</span><span class="s">&quot;false&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/selector&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://blog.stylingandroid.com/archives/1240">Styling the ActionBar – Part 1</a></li>
+<li><a href="http://android-developers.blogspot.co.uk/2011/04/customizing-action-bar.html">Customizing the Action Bar</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
 </feed>

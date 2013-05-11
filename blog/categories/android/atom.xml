@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Android | My Octopress Blog]]></title>
+  <link href="http://shaobin0604.github.io/blog/categories/android/atom.xml" rel="self"/>
+  <link href="http://shaobin0604.github.io/"/>
+  <updated>2013-05-11T23:56:01+08:00</updated>
+  <id>http://shaobin0604.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Styling ActionBar Tabs]]></title>
+    <link href="http://shaobin0604.github.io/blog/2013/05/11/styling-actionbar-tabs/"/>
+    <updated>2013-05-11T23:12:00+08:00</updated>
+    <id>http://shaobin0604.github.io/blog/2013/05/11/styling-actionbar-tabs</id>
+    <content type="html"><![CDATA[<h2>问题说明</h2>
+
+<p>修改 <code>ActionBar</code> <code>Tabs</code> 模式在 <code>Theme.Holo.Light</code> 下的样式，以前是这个样子滴</p>
+
+<p><img src="/images/actionbar_tabs_old.png" width="480"></p>
+
+<p>现要改成如下样式</p>
+
+<p><img src="/images/actionbar_tabs_new.png" width="480"></p>
+
+<h2>实现方式</h2>
+
+<p>打开 SDK 里的 Theme 文件 <code>&lt;ANDROID_SDK&gt;/platforms/android-4.2/data/res/values/themes.xml</code>,与 <code>ActionBar</code> 相关的属性如下：</p>
+
+<p>```</p>
+
+<!-- Action bar styles -->
+
+
+<p><item name="actionDropDownStyle">@android:style/Widget.Holo.Light.Spinner.DropDown.ActionBar</item>
+<item name="actionButtonStyle">@android:style/Widget.Holo.Light.ActionButton</item>
+<item name="actionOverflowButtonStyle">@android:style/Widget.Holo.Light.ActionButton.Overflow</item>
+<item name="actionModeBackground">@android:drawable/cab_background_top_holo_light</item>
+<item name="actionModeSplitBackground">@android:drawable/cab_background_bottom_holo_light</item>
+<item name="actionModeCloseDrawable">@android:drawable/ic_cab_done_holo_light</item>
+<item name="actionBarTabStyle">@style/Widget.Holo.Light.ActionBar.TabView</item>
+<item name="actionBarTabBarStyle">@style/Widget.Holo.Light.ActionBar.TabBar</item>
+<item name="actionBarTabTextStyle">@style/Widget.Holo.Light.ActionBar.TabText</item>
+<item name="actionModeStyle">@style/Widget.Holo.Light.ActionMode</item>
+<item name="actionModeCloseButtonStyle">@style/Widget.Holo.Light.ActionButton.CloseMode</item>
+<item name="android:actionBarStyle">@android:style/Widget.Holo.Light.ActionBar.Solid</item>
+<item name="actionBarSize">@dimen/action_bar_default_height</item>
+<item name="actionModePopupWindowStyle">@android:style/Widget.Holo.Light.PopupWindow.ActionMode</item>
+<item name="actionBarWidgetTheme">@null</item>
+```</p>
+
+<p>与 <code>Tab</code> 相关的属性分析是</p>
+
+<ul>
+<li>actionBarTabBarStyle &ndash; 多个Tab的容器样式</li>
+<li>actionBarTabStyle &ndash; 单个Tab样式</li>
+<li>actionBarTabTextStyle &ndash; Tab上的字体风格</li>
+</ul>
+
+
+<p>我们需要修改的样式有以下几部分</p>
+
+<ul>
+<li>TabBar 背景色</li>
+<li>多个 Tab 之间的分隔符</li>
+<li>Tab 背景色</li>
+</ul>
+
+
+<p>创建 <code>style.xml</code></p>
+
+<p>``` xml style.xml
+<resources></p>
+
+<pre><code>&lt;style name="MyActionBarTabBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar"&gt;
+    &lt;item name="android:background"&gt;@drawable/actionbar_tabs_bar_bg&lt;/item&gt;
+    &lt;item name="android:divider"&gt;@drawable/actionbar_divider&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="MyActionBarTabStyle" parent="@android:style/Widget.Holo.Light.ActionBar.TabView"&gt;
+    &lt;item name="android:background"&gt;@drawable/actionbar_tabs_bg&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="AppTheme.Holo.Light" parent="@android:style/Theme.Holo.Light"&gt;
+    &lt;item name="android:actionBarTabBarStyle"&gt;@style/MyActionBarTabBarStyle&lt;/item&gt;
+    &lt;item name="android:actionBarTabStyle"&gt;@style/MyActionBarTabStyle&lt;/item&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p></resources>
+```</p>
+
+<p><code>@drawable/actionbar_tabs_bg</code> 是 <code>StateListDrawable</code></p>
+
+<p>``` xml actionbar_tabs_bg.xml
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;utf-8&rdquo;?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"></p>
+
+<pre><code>&lt;!-- Selected states --&gt;
+&lt;item android:drawable="@drawable/actionbar_tabs_bg_pressed" android:state_focused="false" android:state_pressed="false" android:state_selected="true"/&gt;
+&lt;!-- Focused states --&gt;
+&lt;item android:drawable="@drawable/actionbar_tabs_bg_pressed" android:state_focused="true" android:state_pressed="false" android:state_selected="false"/&gt;
+&lt;item android:drawable="@drawable/actionbar_tabs_bg_pressed" android:state_focused="true" android:state_pressed="false" android:state_selected="true"/&gt;
+&lt;!-- Pressed --&gt;
+&lt;item android:drawable="@drawable/actionbar_tabs_bg_pressed" android:state_pressed="true"/&gt;
+
+&lt;item android:drawable="@android:color/transparent" android:state_focused="false" android:state_pressed="false" android:state_selected="false"/&gt;
+</code></pre>
+
+<p></selector>
+```</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://blog.stylingandroid.com/archives/1240">Styling the ActionBar – Part 1</a></li>
+<li><a href="http://android-developers.blogspot.co.uk/2011/04/customizing-action-bar.html">Customizing the Action Bar</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
