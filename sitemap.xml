@@ -2,21 +2,25 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://shaobin0604.github.io/blog/2013/05/11/styling-actionbar-tabs/</loc>
-        <lastmod>2013-05-11T23:56:00+08:00</lastmod>
+        <lastmod>2013-09-09T00:11:24+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://shaobin0604.github.io/blog/2013/09/08/common-mistake-of-webviewclient-shouldoverrideurlloading/
         </loc>
-        <lastmod>2013-09-08T22:51:32+08:00</lastmod>
+        <lastmod>2013-09-09T00:11:24+08:00</lastmod>
     </url>
     <url>
         <loc>http://shaobin0604.github.io/</loc>
-        <lastmod>2013-09-08T22:51:32+08:00</lastmod>
+        <lastmod>2013-09-09T00:11:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://shaobin0604.github.io/blog/categories/</loc>
+        <lastmod>2013-09-09T00:11:24+08:00</lastmod>
     </url>
     <url>
         <loc>http://shaobin0604.github.io/blog/archives/</loc>
-        <lastmod>2013-09-08T22:51:32+08:00</lastmod>
+        <lastmod>2013-09-09T00:11:24+08:00</lastmod>
     </url>
     <url>
         <loc>http://shaobin0604.github.io/robots.txt</loc>
@@ -24,6 +28,6 @@
     </url>
     <url>
         <loc>http://shaobin0604.github.io/about/</loc>
-        <lastmod>2013-08-18T23:38:30+08:00</lastmod>
+        <lastmod>2013-09-09T00:11:24+08:00</lastmod>
     </url>
 </urlset>
