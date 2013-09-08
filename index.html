@@ -9,7 +9,7 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="问题说明 修改 ActionBar Tabs 模式在 Theme.Holo.Light 下的样式，以前是这个样子滴 现要改成如下样式 实现方式 打开 SDK 里的 Theme 文件 &lt;ANDROID_SDK&gt;/platforms/android-4.2/data/res/values/ &hellip;">
+  <meta name="description" content="需求描述 在使用 WebView 的项目中，一个常见的需求是将页面内的链接跳转限制在 WebView 内，而不是使用外部浏览器打开，但 WebView 的默认行为是将链接点击事件作为 Intent 发送给系统，由系统决定如何处理（通常的行为是使用浏览器打开或是弹出浏览器选择对话框）， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,87 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/08/common-mistake-of-webviewclient-shouldoverrideurlloading/">Common Mistake of WebViewClient shouldOverrideUrlLoading</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-08T21:51:00+08:00" pubdate data-updated="true">Sep 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>需求描述</h2>
+
+<p>在使用 <code>WebView</code> 的项目中，一个常见的需求是将页面内的链接跳转限制在 <code>WebView</code> 内，而不是使用外部浏览器打开，但 <code>WebView</code> 的默认行为是将链接点击事件作为 <code>Intent</code> 发送给系统，由系统决定如何处理（通常的行为是使用浏览器打开或是弹出浏览器选择对话框），那么如何实现期望的效果呢？</p>
+
+<h2>实现方案</h2>
+
+<p>文章<a href="http://blog.csdn.net/chenshijun0101/article/details/7045145">关于用WebView或手机浏览器打开连接问题</a>给出了一种使用 <code>WebViewClient#shouldOverrideUrlLoading</code>方法的方案可以达到效果，但其使用该方法的方式是错误的，且被广泛传播。因此，有必要在此澄清一下。</p>
+
+<p><code>WebView#shouldOverrideUrlLoading</code> 的 api doc 如下</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>public boolean shouldOverrideUrlLoading (WebView view, String url)
+</span><span class='line'>
+</span><span class='line'>Added in API level 1
+</span><span class='line'>Give the host application a chance to take over the control when a &gt; new url is about to be loaded in the current WebView. If WebViewClient is not provided, by default WebView will ask Activity Manager to choose the proper handler for the url. If WebViewClient is provided, return true means the host application handles the url, while return false means the current WebView handles the url. This method is not called for requests using the POST "method".
+</span><span class='line'>
+</span><span class='line'>Parameters
+</span><span class='line'>view  The WebView that is initiating the callback.
+</span><span class='line'>url   The url to be loaded.
+</span><span class='line'>Returns
+</span><span class='line'>True if the host application wants to leave the current WebView and handle the url itself, otherwise return false.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>翻译一下，三种情况：</p>
+
+<ol>
+<li>若没有设置 <code>WebViewClient</code> 则在点击链接之后由系统处理该 url，通常是使用浏览器打开或弹出浏览器选择对话框。</li>
+<li>若设置 <code>WebViewClient</code> 且该方法返回 <em>true</em> ，则说明由应用的代码处理该 url，<code>WebView</code> 不处理。</li>
+<li>若设置 <code>WebViewClient</code> 且该方法返回 <em>false</em>，则说明由 <code>WebView</code> 处理该 url，即用 <code>WebView</code> 加载该 url。</li>
+</ol>
+
+
+<p>因此，开篇的需求使用如下方法即可实现：</p>
+
+<blockquote><p>设置 <code>WebViewClient</code> 且在其 <code>shouldOverrideUrlLoading</code> 方法返回 <em>false</em></p></blockquote>
+
+<p>示例程序见 <a href="https://github.com/shaobin0604/miscandroidapps/tree/master/WebViewClientTest">WebViewClientTest</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -254,6 +335,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/08/common-mistake-of-webviewclient-shouldoverrideurlloading/">Common Mistake of WebViewClient shouldOverrideUrlLoading</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/05/11/styling-actionbar-tabs/">Styling ActionBar Tabs</a>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: WebView | My Octopress Blog]]></title>
+  <link href="http://shaobin0604.github.io/blog/categories/webview/atom.xml" rel="self"/>
+  <link href="http://shaobin0604.github.io/"/>
+  <updated>2013-09-08T22:54:52+08:00</updated>
+  <id>http://shaobin0604.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Common Mistake of WebViewClient shouldOverrideUrlLoading]]></title>
+    <link href="http://shaobin0604.github.io/blog/2013/09/08/common-mistake-of-webviewclient-shouldoverrideurlloading/"/>
+    <updated>2013-09-08T21:51:00+08:00</updated>
+    <id>http://shaobin0604.github.io/blog/2013/09/08/common-mistake-of-webviewclient-shouldoverrideurlloading</id>
+    <content type="html"><![CDATA[<h2>需求描述</h2>
+
+<p>在使用 <code>WebView</code> 的项目中，一个常见的需求是将页面内的链接跳转限制在 <code>WebView</code> 内，而不是使用外部浏览器打开，但 <code>WebView</code> 的默认行为是将链接点击事件作为 <code>Intent</code> 发送给系统，由系统决定如何处理（通常的行为是使用浏览器打开或是弹出浏览器选择对话框），那么如何实现期望的效果呢？</p>
+
+<h2>实现方案</h2>
+
+<p>文章<a href="http://blog.csdn.net/chenshijun0101/article/details/7045145">关于用WebView或手机浏览器打开连接问题</a>给出了一种使用 <code>WebViewClient#shouldOverrideUrlLoading</code>方法的方案可以达到效果，但其使用该方法的方式是错误的，且被广泛传播。因此，有必要在此澄清一下。</p>
+
+<p><code>WebView#shouldOverrideUrlLoading</code> 的 api doc 如下</p>
+
+<p>```
+public boolean shouldOverrideUrlLoading (WebView view, String url)</p>
+
+<p>Added in API level 1
+Give the host application a chance to take over the control when a > new url is about to be loaded in the current WebView. If WebViewClient is not provided, by default WebView will ask Activity Manager to choose the proper handler for the url. If WebViewClient is provided, return true means the host application handles the url, while return false means the current WebView handles the url. This method is not called for requests using the POST &ldquo;method&rdquo;.</p>
+
+<p>Parameters
+view    The WebView that is initiating the callback.
+url The url to be loaded.
+Returns
+True if the host application wants to leave the current WebView and handle the url itself, otherwise return false.
+```</p>
+
+<p>翻译一下，三种情况：</p>
+
+<ol>
+<li>若没有设置 <code>WebViewClient</code> 则在点击链接之后由系统处理该 url，通常是使用浏览器打开或弹出浏览器选择对话框。</li>
+<li>若设置 <code>WebViewClient</code> 且该方法返回 <em>true</em> ，则说明由应用的代码处理该 url，<code>WebView</code> 不处理。</li>
+<li>若设置 <code>WebViewClient</code> 且该方法返回 <em>false</em>，则说明由 <code>WebView</code> 处理该 url，即用 <code>WebView</code> 加载该 url。</li>
+</ol>
+
+
+<p>因此，开篇的需求使用如下方法即可实现：</p>
+
+<blockquote><p>设置 <code>WebViewClient</code> 且在其 <code>shouldOverrideUrlLoading</code> 方法返回 <em>false</em></p></blockquote>
+
+<p>示例程序见 <a href="https://github.com/shaobin0604/miscandroidapps/tree/master/WebViewClientTest">WebViewClientTest</a></p>
+]]></content>
+  </entry>
+  
+</feed>
